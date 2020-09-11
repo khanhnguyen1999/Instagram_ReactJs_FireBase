@@ -9,13 +9,19 @@ import {MdHome} from 'react-icons/md'
 import {ContextProvider} from '../../Global/Context'
 
 export default function Navbar(){
-    const {model,openModel,user,logout} = useContext(ContextProvider)
+    const {model,openModel,user,logout,loader} = useContext(ContextProvider)
     console.log(user)
     const handleOpenForm = ()=>{
         openModel()
     }
     const logoutForm = ()=>{
         logout()
+    }
+    const checkUser = ()=>{
+        return !loader?(
+            !loader && user? <><li>{user.displayName}</li><li onClick={logoutForm}>LogOut</li></> :
+                <li onClick={handleOpenForm}>Register/Login</li>   
+        ):("...")
     }
     return (
         <div className="navbar">
@@ -44,10 +50,7 @@ export default function Navbar(){
                     <FaRegHeart className="navbar__icon"/>
                 </li>
                 {
-                    !user? <li onClick={handleOpenForm}>Register/Login</li> :
-                    <>
-                        <li>{user.displayName}</li><li onClick={logoutForm}>LogOut</li>
-                    </>
+                    checkUser()
                 }
             </div>
         </div>
